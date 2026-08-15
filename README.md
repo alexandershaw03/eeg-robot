@@ -29,7 +29,7 @@ Three trained mental commands — **Push, Pull and Drop** - were used to generat
 
 ### System Architecture
 
-```
+
 flowchart LR
     EEG["Emotiv Insight<br/>EEG Headset"]
     PC["PC<br/>HITIbrain"]
