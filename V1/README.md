@@ -8,7 +8,7 @@ It combines an Emotiv Insight EEG headset, HITIbrain command interface, Arduino-
 
 This directory preserves the system as developed for the final-year project. Later modifications and post-graduation development are documented separately under [`V2/`](../V2/).
 <p align="center">
-  <img src="../media/v1/eeg-robot-v1-hero.jpg" width="350" alt="Completed V1 EEG-controlled mobile robot">
+  <img src="../media/v1/eeg-robot-v1-hero.jpg" width="400" alt="Completed V1 EEG-controlled mobile robot">
 </p>
 
 
