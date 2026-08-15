@@ -8,6 +8,10 @@ The original objective was to demonstrate an end-to-end system capable of conver
 
 > **Project status:** V1 completed and demonstrated. V2 currently in development.
 
+**[V1 — Completed System](V1/)** ·
+**[V1 Transmitter Firmware](V1/firmware/transmitter/)** ·
+**[V1 Receiver Firmware](V1/firmware/receiver/)** ·
+**[V2 — Current Development](V2/)**
 ---
 
 ## Project Versions
