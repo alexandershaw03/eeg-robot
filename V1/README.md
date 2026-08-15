@@ -6,7 +6,7 @@ V1 is the original completed and demonstrated version of the EEG-controlled mobi
 
 It combines an Emotiv Insight EEG headset, HITIbrain command interface, Arduino-based embedded control system, nRF24L01+ wireless link and TB6612FNG motor controller to translate trained mental commands into physical robot movement.
 
-This directory preserves the system as developed for the final-year project. Later modifications and post-graduation development are documented separately under `V2/`.
+This directory preserves the system as developed for the final-year project. Later modifications and post-graduation development are documented separately under [`V2/`](../V2/).
 <p align="center">
   <img src="../media/v1/eeg-robot-v1-hero.jpg" width="350" alt="Completed V1 EEG-controlled mobile robot">
 </p>
