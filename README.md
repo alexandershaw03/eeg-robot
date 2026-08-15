@@ -27,6 +27,12 @@ V1 converts trained mental commands detected using an **Emotiv Insight EEG heads
 
 Three trained mental commands — **Push, Pull and Drop** - were used to generate forward, left and right motion commands.
 
+<p align="center">
+  <img src="media/v1/eeg-robot-v1-hero.jpg"
+       width="850"
+       alt="Completed V1 EEG-controlled mobile robot">
+</p>
+
 ### System Architecture
 
 
