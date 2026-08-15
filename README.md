@@ -2,9 +2,9 @@
 
 A real-time EEG-controlled mobile robotics platform integrating brain-computer interfacing, embedded systems, wireless communications and motor control.
 
-The system was originally developed as my final-year project for a BEng (Hons) in Mechanical Engineering. Following completion of the degree project, development has continued independently as a broader robotics and sensing platform.
+The system was originally developed as my final-year project for a BEng (Hons) in Mechanical Engineering, with the aim of making an alternatively-accesible wheelchair (where the "robotic platform" would become the basis of this). Following completion of the degree project, development has continued independently as a broader robotics and sensing platform.
 
-The original objective was to demonstrate an end-to-end system capable of converting trained EEG-derived mental commands into reliable physical movement, with a longer-term motivation of exploring alternative control interfaces for accessible mobility.
+The original objective was to demonstrate an end-to-end system capable of converting trained EEG-derived mental commands into reliable physical movement, again, with longer-term motivation of exploring alternative control interfaces for accessible mobility.
 
 > **Project status:** V1 completed and demonstrated. V2 currently in development.
 
