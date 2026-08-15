@@ -7,35 +7,31 @@ V1 is the original completed and demonstrated version of the EEG-controlled mobi
 It combines an Emotiv Insight EEG headset, HITIbrain command interface, Arduino-based embedded control system, nRF24L01+ wireless link and TB6612FNG motor controller to translate trained mental commands into physical robot movement.
 
 This directory preserves the system as developed for the final-year project. Later modifications and post-graduation development are documented separately under `V2/`.
-
+<p align="center">
+  <img src="media/v1/eeg-robot-v1-hero.jpg" width="850" alt="Completed V1 EEG-controlled mobile robot">
+</p>
 ---
 
 ## System Overview
 
 ```mermaid
-flowchart TD
-    USER["User"]
-    EEG["Emotiv Insight"]
-    HITI["HITIbrain"]
-    R3["Arduino UNO R3<br/>Transmitter"]
-    TXRF["nRF24L01+<br/>TX"]
-    RXRF["nRF24L01+<br/>RX"]
-    R4["Arduino UNO R4 WiFi<br/>Receiver"]
-    SAFE["Packet Validation<br/>+ Fail-Safe Logic"]
-    MOTOR["Differential<br/>Motor Control"]
-    TB["TB6612FNG"]
-    ROBOT["Mobile Robot"]
+flowchart LR
+    EEG["Emotiv Insight<br/>EEG Headset"]
+    PC["PC<br/>HITIbrain"]
+    TX["Arduino UNO R3<br/>Transmitter"]
+    RF1["nRF24L01+"]
+    RF2["nRF24L01+"]
+    RX["Arduino UNO R4 WiFi<br/>Receiver"]
+    DRIVER["TB6612FNG<br/>Motor Driver"]
+    MOTORS["Differential<br/>Drivetrain"]
 
-    USER --> EEG
-    EEG --> HITI
-    HITI --> R3
-    R3 --> TXRF
-    TXRF -. wireless control .-> RXRF
-    RXRF --> R4
-    R4 --> SAFE
-    SAFE --> MOTOR
-    MOTOR --> TB
-    TB --> ROBOT
+    EEG --> PC
+    PC --> TX
+    TX --> RF1
+    RF1 -.-> RF2
+    RF2 --> RX
+    RX --> DRIVER
+    DRIVER --> MOTORS
 ```
 
 The system separates EEG command generation from the mobile platform itself. The PC and transmitter generate the requested control state, while the receiver is responsible for deciding whether that command is sufficiently recent and valid to be executed.
