@@ -29,7 +29,7 @@ Three trained mental commands — **Push, Pull and Drop** - were used to generat
 
 ### System Architecture
 
-```mermaid
+```
 flowchart LR
     EEG["Emotiv Insight<br/>EEG Headset"]
     PC["PC<br/>HITIbrain"]
@@ -43,7 +43,7 @@ flowchart LR
     EEG --> PC
     PC --> TX
     TX --> RF1
-    RF1 -. 2.4 GHz RF .-> RF2
+    RF1 -.-> RF2
     RF2 --> RX
     RX --> DRIVER
     DRIVER --> MOTORS
