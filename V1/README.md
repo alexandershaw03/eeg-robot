@@ -36,6 +36,33 @@ flowchart LR
 
 The system separates EEG command generation from the mobile platform itself. The PC and transmitter generate the requested control state, while the receiver is responsible for deciding whether that command is sufficiently recent and valid to be executed.
 
+<p align="center">
+  <img src="../media/v1/transmitter-and-reciever-mounted.jpg"
+       width="500"
+       alt="V1 EEG robot embedded control hardware">
+</p>
+
+## V1 System Specifications
+
+| Parameter | V1 Implementation |
+|---|---|
+| EEG interface | Emotiv Insight |
+| Command interface | HITIbrain |
+| Mental commands | Push / Pull / Drop |
+| Transmitter MCU | Arduino UNO R3 |
+| Receiver MCU | Arduino UNO R4 WiFi |
+| Wireless link | nRF24L01+ |
+| RF channel | 76 |
+| RF data rate | 250 kbps |
+| Command update rate | 20 Hz |
+| Control packet size | 3 bytes |
+| Communication timeout | 200 ms |
+| Light RF recovery interval | 500 ms |
+| Full RF restart threshold | 2.5 s |
+| Motor driver | TB6612FNG |
+| Steering | Differential drive |
+| Motor control | PWM with soft-start ramping |
+
 ---
 
 ## EEG Control
@@ -67,6 +94,23 @@ The transmitter also rejects ambiguous states. If more than one movement input i
 * Arduino UNO R3
 * nRF24L01+
 * PC running HITIbrain
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="../media/v1/transmitter-board.jpg"
+           alt="V1 transmitter board with nRF24L01+ radio">
+      <br>
+      <sub><b>Transmitter:</b> Arduino-side HITIbrain interface and nRF24L01+ wireless module</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/v1/reciever-board.jpg"
+           alt="V1 receiver and TB6612FNG motor-control board">
+      <br>
+      <sub><b>Receiver:</b> wireless receiver and TB6612FNG differential motor-control.</sub>
+    </td>
+  </tr>
+</table>
 
 ### HITI Inputs
 
