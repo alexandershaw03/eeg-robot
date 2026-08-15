@@ -4,6 +4,8 @@ A real-time EEG-to-robotics system developed as my undergraduate capstone projec
 
 The project integrates neural-signal acquisition, embedded communications, motor control and a desktop monitoring interface into a complete working mobile robot.
 
+The overall or long-term goal for it, was for the robotic platform to be used as an alternatively accessible wheelchair.
+
 > **Status:** Repository under construction.  
 > Source code, schematics, documentation and test material are currently being organised and uploaded.
 
