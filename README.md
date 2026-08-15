@@ -1,169 +1,245 @@
-# EEG-Controlled Mobile Robot
+# EEG Robot
 
-A real-time EEG-to-robotics system developed as my undergraduate capstone project in Mechanical Engineering.
+A real-time EEG-controlled mobile robotics platform integrating brain-computer interfacing, embedded systems, wireless communications and motor control.
 
-The project integrates neural-signal acquisition, embedded communications, motor control and a desktop monitoring interface into a complete working mobile robot.
+The system was originally developed as my final-year project for a BEng (Hons) in Mechanical Engineering. Following completion of the degree project, development has continued independently as a broader robotics and sensing platform.
 
-The overall or long-term goal for it, was for the robotic platform to be used as an alternatively accessible wheelchair.
+The original objective was to demonstrate an end-to-end system capable of converting trained EEG-derived mental commands into reliable physical movement, with a longer-term motivation of exploring alternative control interfaces for accessible mobility.
 
-> **Status:** Repository under construction.  
-> Source code, schematics, documentation and test material are currently being organised and uploaded.
+> **Project status:** V1 completed and demonstrated. V2 currently in development.
 
 ---
 
-## Project Overview
+## Project Versions
 
-The system converts EEG-derived commands into physical robot motion through the following pipeline:
+| Version                          | Status         | Description                                                                                                                                            |
+| -------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **V1 — Final-Year Project**      | Complete       | Original EEG-controlled mobile robot developed and demonstrated as part of my undergraduate engineering project.                                       |
+| **V2 — Independent Development** | In development | Continued development of the platform following graduation, focused on improving actuation, sensing, feedback, software and overall system capability. |
 
-```text
-Emotiv Insight EEG
-        │
-        ▼
-Emotiv Cortex API
-        │
-        ▼
-Command generation
-        │
-        ▼
-Arduino transmitter
-        │
-        ▼
-nRF24L01+ wireless link
-        │
-        ▼
-Arduino receiver
-        │
-        ▼
-Motor-control logic
-        │
-        ▼
-Mobile robot
+The separation between V1 and V2 is intentional: V1 documents the completed academic project as it was demonstrated, while V2 records the engineering work undertaken independently afterwards.
+
+---
+
+## V1 - Completed EEG-Controlled Robot
+
+V1 converts trained mental commands detected using an **Emotiv Insight EEG headset** into wireless motion commands for a mobile robot.
+
+Three trained mental commands — **Push, Pull and Drop** - were used to generate forward, left and right motion commands.
+
+### System Architecture
+
+```mermaid
+flowchart LR
+    EEG["Emotiv Insight<br/>EEG Headset"]
+    PC["PC<br/>HITIbrain"]
+    TX["Arduino UNO R3<br/>Transmitter"]
+    RF1["nRF24L01+"]
+    RF2["nRF24L01+"]
+    RX["Arduino UNO R4 WiFi<br/>Receiver"]
+    DRIVER["TB6612FNG<br/>Motor Driver"]
+    MOTORS["Differential<br/>Drivetrain"]
+
+    EEG --> PC
+    PC --> TX
+    TX --> RF1
+    RF1 -. 2.4 GHz RF .-> RF2
+    RF2 --> RX
+    RX --> DRIVER
+    DRIVER --> MOTORS
 ```
 
-The project was designed as an end-to-end robotics system rather than a standalone signal-processing demonstration.
+The system was designed as a complete mechatronic control chain rather than a standalone EEG-processing demonstration.
 
 ---
 
-## Core Features
+## Embedded Control System
 
-- real-time EEG-derived robot control
-- Emotiv Insight integration through the Cortex API
-- embedded C/C++ firmware
-- multi-node Arduino architecture
-- nRF24L01+ wireless communication
-- custom packet protocol with sequence numbering
-- duplicate-packet rejection
-- signal-loss detection
-- watchdog and fail-safe stop behaviour
-- automatic multi-stage recovery
-- differential motor control
-- soft-start motor ramping
-- custom PCB / electronics integration
-- mechanically designed mobile chassis
-- Python desktop ground station
-- live EEG visualisation, command logging and session monitoring
+The transmitter and receiver use a custom lightweight control packet containing:
 
----
-
-## System Architecture
-
-The system spans several engineering layers:
-
-```text
-Neural sensing
-      │
-      ▼
-Signal / command interface
-      │
-      ▼
-Embedded transmitter
-      │
-      ▼
-Wireless communications
-      │
-      ▼
-Embedded receiver
-      │
-      ▼
-Safety / recovery state logic
-      │
-      ▼
-Motor actuation
-      │
-      ▼
-Physical robot
+```cpp
+struct ControlPacket {
+    uint8_t command;
+    uint8_t isValid;
+    uint8_t sequenceNumber;
+};
 ```
 
-A separate Python/Qt ground station provides live system monitoring and EEG visualisation.
+Control packets are transmitted continuously at **20 Hz**, allowing the receiver to distinguish between an actively maintained connection and communication loss.
+
+The receiver implements several layers of communication and actuator protection, including:
+
+* packet validity checking
+* sequence-number tracking
+* duplicate-packet rejection
+* newest-packet prioritisation
+* communication timeout detection
+* automatic fail-safe stopping
+* staged RF recovery
+* full radio restart behaviour
+* soft-start motor ramping
+* differential steering control
+* visual link-status indication using the UNO R4 LED matrix
+
+A loss of valid control packets causes the requested motor speed to return automatically to zero rather than leaving the robot executing its previous command.
+
+Detailed firmware architecture and timings are documented in [`V1/README.md`](V1/README.md).
 
 ---
 
-## Reliability and Safety
+## V1 Hardware
 
-Because the system controls physical hardware wirelessly, the embedded receiver includes explicit fault-handling behaviour.
+### Neural Interface
 
-This includes:
+* Emotiv Insight EEG headset
+* HITIbrain EEG/Arduino interface
 
-- duplicate-packet rejection
-- communication timeout detection
-- watchdog behaviour
-- fail-safe stopping
-- staged retry / recovery logic
-- soft-start motor control
+### Embedded Control
 
-The intention was to make the robot behave predictably during communication loss or invalid command states rather than simply transmitting motor commands.
+* Arduino UNO R3 - transmitter
+* Arduino UNO R4 WiFi - receiver
+* 2 × nRF24L01+ 2.4 GHz RF modules
 
----
+### Actuation
 
-## Technologies
+* TB6612FNG dual motor driver
+* DC motor differential drivetrain
 
-### Embedded
+### Mechanical / Electrical
 
-- C/C++
-- Arduino
-- nRF24L01+
-- motor-driver electronics
-
-### Software
-
-- Python
-- PySide6 / Qt
-- pyqtgraph
-- Emotiv Cortex API
-
-### Hardware
-
-- Emotiv Insight EEG headset
-- microcontrollers
-- RF modules
-- custom PCBs
-- DC motor control
-- custom mobile chassis
+* custom mobile chassis
+* integrated wiring and power electronics
+* custom-designed electronic hardware and mounting components
 
 ---
 
-## Repository Roadmap
+## V1 Motion Control
 
-Planned additions include:
+The robot supports four embedded motion states:
 
-- transmitter firmware
-- receiver firmware
-- desktop ground-station source
-- system architecture diagrams
-- electronics / PCB documentation
-- mechanical design material
-- communications protocol documentation
-- safety and recovery logic
-- setup instructions
-- test results
-- demonstration media
+| Command   | Behaviour                            |
+| --------- | ------------------------------------ |
+| `STOP`    | Both motors stopped                  |
+| `FORWARD` | Both drivetrain sides driven forward |
+| `LEFT`    | Differential forward-left steering   |
+| `RIGHT`   | Differential forward-right steering  |
+
+Forward motion proved the most consistent during physical testing.
+
+Left and right steering were successfully implemented using differential motor speeds, although their physical performance was less consistent than straight-line motion due to limitations of the original drivetrain.
+
+These limitations are among the areas being addressed through continued V2 development.
+
+---
+
+## Reliability and Fail-Safe Behaviour
+
+Because EEG-derived commands ultimately control physical hardware over a wireless link, communication failure was treated as an explicit system state.
+
+The V1 receiver therefore implements a layered recovery strategy:
+
+```text
+Valid packets received
+        │
+        ▼
+   Normal control
+        │
+        │ no valid packet for 200 ms
+        ▼
+   FAIL-SAFE STOP
+        │
+        ▼
+ Signal-loss state
+        │
+        ├── periodic light RF recovery
+        │
+        └── prolonged failure
+                │
+                ▼
+          Full RF restart
+```
+
+This prevents communication loss from leaving the drivetrain operating indefinitely using a stale command.
+
+---
+
+## V2 - Independent Development
+
+V2 represents the continuation of the project after completion of the original degree requirements.
+
+Rather than replacing V1, it uses the completed robot as a starting point for further engineering development.
+
+Current work is focused on improving areas identified during V1 development and testing, including:
+
+* drivetrain performance and controllability
+* motor feedback and closed-loop control
+* embedded telemetry
+* host-side monitoring and control software
+* system observability and diagnostics
+* sensing integration
+* EEG acquisition and processing
+* overall hardware and software modularity
+
+V2 development will be documented separately under [`V2/`](V2/) as individual subsystems are implemented and validated.
+
+---
+
+## Repository Structure
+
+```text
+eeg-robot/
+│
+├── README.md
+│
+├── LICENSE
+│
+├── V1/
+│   ├── README.md
+│   ├── firmware/
+│   │   ├── transmitter/
+│   │   └── receiver/
+│   ├── hitibrain/
+│   ├── hardware/
+│   └── docs/
+│
+├── V2/
+│   ├── README.md
+│   ├── firmware/
+│   ├── software/
+│   ├── hardware/
+│   └── docs/
+│
+└── media/
+    ├── v1/
+    └── v2/
+```
+
+---
+
+## Related Development
+
+The completion of V1 led directly into further work involving:
+
+* raw EEG acquisition and analysis
+* multimodal EEG and event recording
+* Lab Streaming Layer (LSL)
+* XDF recording and analysis
+* MNE-based EEG processing
+* computer-vision-derived human kinematics
+* NVIDIA Jetson edge perception
+* synchronised EEG, experiment and vision streams
+
+That work is maintained separately from the original robot so that this repository can clearly document the evolution of the physical EEG-controlled platform.
 
 ---
 
 ## Project Context
 
-This project formed the basis of my undergraduate final-year engineering project and led directly into later work on multimodal sensing, synchronised EEG/vision recording and NVIDIA Jetson edge perception.
+**BEng (Hons) Mechanical Engineering — Final-Year Project**
 
-That follow-on work is available here:
+London South Bank University
+2025–2026
 
-[`multimodal-sensing`](https://github.com/alexandershaw03/multimodal-sensing)
+The original system was designed, manufactured, programmed, integrated and experimentally demonstrated as an end-to-end EEG-controlled robotic platform.
+
+Development is continuing independently beyond the original academic project.
