@@ -9,8 +9,8 @@ The original objective was to demonstrate an end-to-end system capable of conver
 > **Project status:** V1 completed and demonstrated. V2 currently in development.
 
 **[V1 — Completed System](V1/)** ·
-**[V1 Transmitter Firmware](V1/firmware/transmitter/)** ·
-**[V1 Receiver Firmware](V1/firmware/receiver/)** ·
+**[V1 Transmitter Code](V1/firmware/eeg_car_hiti_tx.ino)** ·
+**[V1 Receiver Code](V1/firmware/eeg_car_rx.ino)** ·
 **[V2 — Current Development](V2/)**
 ---
 
